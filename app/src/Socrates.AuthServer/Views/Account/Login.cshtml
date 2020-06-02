@@ -1,0 +1,87 @@
+@model Socrates.AuthServer.Quickstart.Account.LoginViewModel
+
+@{
+    Layout = null;
+}
+<!-- Login Page -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sign Up Form by Colorlib</title>
+
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="~/fonts/material-icon/css/material-design-iconic-font.min.css">
+
+    <!-- Main css -->
+    <link rel="stylesheet" href="~/css/login.css">
+</head>
+<body>
+    <partial name="_ValidationSummary"/>
+    <div class="main">
+
+        <!-- Sing in  Form -->
+        <section class="sign-in">
+            <div class="container">
+                <div class="signin-content">
+                    <div class="signin-image">
+                        <figure><img src="~/images/signin-image.jpg" alt="sing up image"></figure>
+                        <a href="#" class="signup-image-link">Create an account</a>
+                    </div>
+                    
+                    <div class="signin-form">
+                        <h2 class="form-title">Login</h2>
+                        <form class="register-form" id="login-form" asp-route="Login">
+                            <input type="hidden" asp-for="ReturnUrl"/>
+                            <div class="form-group">
+                                <label asp-for="Username"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input asp-for="Username" placeholder="Your email" autofocus>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Password"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="password" placeholder="Password" asp-for="Password" autocomplete="off"/>
+                            </div>
+                            @if (Model.AllowRememberLogin)
+                            {                                
+                                <div class="form-group">
+                                    <input asp-for="RememberLogin" class="agree-term" />
+                                    <label asp-for="RememberLogin" class="label-agree-term"><span><span></span></span>Remember me</label>
+                                </div>
+                            }
+                            <div class="form-group form-button">
+                                <input type="submit" name="signin" id="signin" class="form-submit" value="Log in"/>
+                            </div>
+                        </form>
+                         @if (Model.VisibleExternalProviders.Any())
+                         {
+                             <div class="social-login">
+                                 <span class="social-label">Or login with</span>
+                                 <ul class="socials">
+                                  @foreach (var provider in Model.VisibleExternalProviders)
+                                  {
+                                      <li>
+                                          <a asp-controller="External" asp-action="Challenge" asp-route-provider="@provider.AuthenticationScheme" asp-route-returnUrl="@Model.ReturnUrl"><i class="display-flex-center zmdi zmdi-@provider.DisplayName.ToLower()"></i></a>
+                                      </li>
+                                  }
+                                 </ul>
+                             </div>
+                         }
+                    </div>
+                </div>
+            </div>
+        </section>
+        @if (!Model.EnableLocalLogin && !Model.VisibleExternalProviders.Any())
+        {
+            <div class="alert alert-warning">
+                <strong>Invalid login request</strong>
+                There are no login schemes configured for this client.
+            </div>
+        }
+    </div>
+
+    <!-- JS -->
+    <script src="~/lib/jquery/jquery.min.js"></script>
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+</html>
